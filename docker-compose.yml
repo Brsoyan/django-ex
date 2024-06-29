@@ -1,0 +1,66 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: vvv-db-2024
+      POSTGRES_USER: vvv-sudo-user
+      POSTGRES_PASSWORD: vLH26oAHRmhHOL1
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DB_NAME: vvv-db-2024
+      DB_USER: vvv-sudo-user
+      DB_PASSWORD: vLH26oAHRmhHOL1
+      DB_HOST: db
+      DB_PORT: 5432
+      DJANGO_DEBUG: '1'  # Set to '1' to enable debug mode, '0' to disable
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: .
+    command: celery -A vvv worker -l INFO
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    environment:
+      DB_NAME: vvv-db-2024
+      DB_USER: vvv-sudo-user
+      DB_PASSWORD: vLH26oAHRmhHOL1
+      DB_HOST: db
+      DB_PORT: 5432
+
+  celery-beat:
+    build: .
+    command: celery -A vvv beat -l INFO
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    environment:
+      DB_NAME: vvv-db-2024
+      DB_USER: vvv-sudo-user
+      DB_PASSWORD: vLH26oAHRmhHOL1
+      DB_HOST: db
+      DB_PORT: 5432
+
+volumes:
+  postgres_data:

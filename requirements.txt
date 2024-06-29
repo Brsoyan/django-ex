@@ -1,0 +1,10 @@
+Django>=3.2,<4.0
+djangorestframework
+psycopg2-binary
+gunicorn
+celery
+redis>=3.5,<4.0
+colorama
+
+# save anel@ chi ashxatum
+# u tasker@ vor mez uzac jamanak kanchvi
