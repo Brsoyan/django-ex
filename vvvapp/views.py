@@ -3,6 +3,9 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .models import AddUser, Ping
 from .serializers import AddUserSerializer, PingSerializer
+from logger_util import ColoredLogger, Fore  # Import Fore from colorama for colors
+
+logger = ColoredLogger(__name__)
 
 class AddUserRequestViewSet(viewsets.ModelViewSet):
     queryset = AddUser.objects.all()
@@ -30,8 +33,10 @@ class PingRequestViewSet(viewsets.ModelViewSet):
             return Response({'error': 'IP address is required'}, status=status.HTTP_400_BAD_REQUEST)
         try:
             user = AddUser.objects.get(ip=ip)
-            user.isActive = True
+            user.active = True
             user.save()
+            logger.info(f'User updated {user.ip}.', color=Fore.GREEN)
+
             return super().create(request, *args, **kwargs)
         except AddUser.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
