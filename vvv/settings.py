@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-r+7f+cw86@)q#if#bd$4he&q*p)g+r1240kwhlu+rs-5huc!lr
 DEBUG = True
 
 DEBUG = os.environ.get('DJANGO_DEBUG', '') == '1'
+SHARED_KEY = os.environ.get('SHARED_KEY')
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'vvvapp.middleware.VerificationStringMiddleware',
 ]
 
 ROOT_URLCONF = 'vvv.urls'

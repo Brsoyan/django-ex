@@ -1,9 +1,8 @@
 from .models import AddUser
 from datetime import timedelta
-from logger_util import ColoredLogger, Fore  # Import Fore from colorama for colors
+from logger_util import ColoredLogger, Fore
 from celery import shared_task
 from django.utils import timezone # type: ignore
-from django.conf import settings
 
 logger = ColoredLogger(__name__)
 

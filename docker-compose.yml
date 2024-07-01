@@ -24,6 +24,7 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       DJANGO_DEBUG: '1'  # Set to '1' to enable debug mode, '0' to disable
+      SHARED_KEY: '77936361'
 
   redis:
     image: redis:6
